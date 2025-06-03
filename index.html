@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Instrument Hub - Play Your Music</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- GSAP CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body class="dark-theme"> <!-- Default to dark theme -->
+
+    <div class="site-wrapper">
+        <header class="site-header">
+            <div class="container">
+                <a href="#home" class="logo">Instrument<span>Hub</span></a>
+                <nav class="site-nav">
+                    <ul>
+                        <li><a href="#home" class="nav-link active-link" data-page="home">Home</a></li>
+                        <li><a href="#instruments" class="nav-link" data-page="instruments">Instruments</a></li>
+                        <li><a href="#about" class="nav-link" data-page="about">About</a></li>
+                        <li><a href="#contact" class="nav-link" data-page="contact">Contact</a></li>
+                    </ul>
+                </nav>
+                <button id="theme-toggle-btn-site" class="theme-toggle-site" aria-label="Toggle theme">🌓</button>
+            </div>
+        </header>
+
+        <main id="page-content" class="page-content-area">
+            <!-- Page content will be loaded here by site-script.js -->
+        </main>
+
+        <footer class="site-footer">
+            <div class="container">
+                <p>© <span id="current-year"></span> InstrumentHub. All Rights Reserved. Music for Everyone!</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook">F</a>
+                    <a href="#" aria-label="Twitter">T</a>
+                    <a href="#" aria-label="Instagram">I</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div id="orientation-suggestion-overlay" style="display:none;">
+        <p>For the best instrument experience, please rotate your device to landscape mode!</p>
+        <button id="dismiss-orientation-suggestion">Dismiss</button>
+    </div>
+
+    <!-- Site Navigation Script -->
+    <script src="site-script.js"></script>
+    <!-- Instrument App Script (will be initialized when #instruments page is active) -->
+    <script src="app-script.js" defer></script>
+</body>
+</html>
