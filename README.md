@@ -53,7 +53,7 @@ instrument-hub/
 
 1.  **Clone the repository (or download the files):**
     ```bash
-    git clone https://github.com/your-username/instrument-hub.git
+    git clone https://github.com/RithvikReddy0-0/instrument-hub.git
     cd instrument-hub
     ```
     (If you're not using Git, simply download the `index.html`, `style.css`, `site-script.js`, and `app-script.js` files into a single folder.)
