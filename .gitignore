@@ -1,0 +1,11 @@
+node_modules/
+dist/
+coverage/
+*.local
+.DS_Store
+.vite/
+
+# Local tooling / agent scaffolding — not part of the app
+.claude/
+.agents/
+skills-lock.json

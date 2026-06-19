@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "product": "InstrumentHub",
+  "vision": "Music for everyone, instantly in the browser.",
+  "families": ["Keyboard", "Strings", "Percussion", "Woodwind", "Brass"],
+  "features": [
+    "Polyphonic Web Audio synthesis",
+    "Recording and replay",
+    "Chord mode",
+    "Scale highlighting",
+    "Practice prompts",
+    "Responsive instrument visualizations"
+  ]
+}

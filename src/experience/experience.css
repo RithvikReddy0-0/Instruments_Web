@@ -1,0 +1,161 @@
+/**
+ * Experience layer styling — overlay, internal scroll wrapper, captions, CTA,
+ * skip, whiteout. Loaded only when the experience runs (imported by the dynamic
+ * chunk), so it never affects the app's critical path.
+ */
+
+/* Freeze the app while the intro is on top. */
+html.exp-active,
+html.exp-active body { overflow: hidden; height: 100%; }
+
+.experience-root {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #0b0b0d;
+  color: #f3efe6;
+  font-family: var(--font-sans, system-ui, sans-serif);
+  overscroll-behavior: none;
+}
+.experience-root[hidden] { display: none; }
+
+/* Lenis scroll capture sits behind the canvas; the (empty) track gives length. */
+.exp-wrapper {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 1;
+}
+.exp-track { width: 100%; }
+
+.exp-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  display: block;
+}
+
+/* UI overlay — transparent to pointer except for actual controls. */
+.exp-ui {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.exp-captions {
+  position: absolute;
+  left: 50%;
+  bottom: 14vh;
+  transform: translateX(-50%);
+  width: min(90vw, 720px);
+  text-align: center;
+}
+.exp-caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  will-change: opacity, transform;
+}
+.exp-caption h2 {
+  margin: 0 0 0.4rem;
+  font-family: var(--font-display, Georgia, serif);
+  font-weight: 500;
+  font-size: clamp(2.2rem, 6vw, 4.2rem);
+  letter-spacing: -0.01em;
+  line-height: 1;
+  color: #f3efe6;
+}
+.exp-caption p {
+  margin: 0;
+  font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+  letter-spacing: 0.04em;
+  color: #c8a24b;
+}
+
+/* Scroll hint. */
+.exp-scrollhint {
+  position: absolute;
+  left: 50%;
+  bottom: 4vh;
+  transform: translateX(-50%);
+  font-size: 0.72rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #6f6a60;
+  transition: opacity 0.5s ease;
+}
+.exp-scrollhint span { animation: exp-bob 1.8s ease-in-out infinite; display: inline-block; }
+.exp-scrollhint.is-hidden { opacity: 0; }
+@keyframes exp-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+
+/* CTA. */
+.exp-cta {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0.96);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.exp-cta.is-on { opacity: 1; transform: translate(-50%, -50%) scale(1); pointer-events: auto; }
+.exp-enter {
+  pointer-events: auto;
+  cursor: pointer;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: clamp(0.85rem, 1.6vw, 1.05rem);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #0b0b0d;
+  background: linear-gradient(180deg, #e2b567, #c8a24b);
+  border: none;
+  border-radius: 999px;
+  padding: 1.1rem 2.4rem;
+  box-shadow: 0 0 0 1px rgba(226, 181, 103, 0.5), 0 18px 50px -12px rgba(200, 162, 75, 0.6);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.exp-enter:hover { transform: translateY(-2px); box-shadow: 0 0 0 1px rgba(226, 181, 103, 0.8), 0 26px 60px -14px rgba(200, 162, 75, 0.75); }
+.exp-enter:focus-visible { outline: 2px solid #4fb8ff; outline-offset: 3px; }
+
+/* Skip — always available. */
+.exp-skip {
+  pointer-events: auto;
+  position: absolute;
+  top: 1.4rem;
+  right: 1.6rem;
+  cursor: pointer;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #9a9488;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  padding: 0.5rem 1rem;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.exp-skip:hover { color: #f3efe6; border-color: rgba(200, 162, 75, 0.6); }
+.exp-skip:focus-visible { outline: 2px solid #4fb8ff; outline-offset: 2px; }
+
+/* Whiteout handoff. */
+.exp-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  /* Cyan/cool-white bloom that dissolves into the living world behind the app. */
+  background: radial-gradient(circle at 50% 50%, #f8fafc 0%, #6ee7ff 42%, #060606 100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+.exp-flash.is-on { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .exp-scrollhint span { animation: none; }
+}

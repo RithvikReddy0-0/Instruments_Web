@@ -1,0 +1,26 @@
+{
+  "name": "instrumenthub-studio",
+  "version": "3.0.0",
+  "description": "Browser-native music workstation, learning platform, and playground.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && node scripts/inject-precache.mjs",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "icons": "node scripts/generate-icons.mjs"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0",
+    "vitest": "^2.1.0"
+  },
+  "dependencies": {
+    "@fontsource-variable/fraunces": "^5.2.9",
+    "@fontsource-variable/jetbrains-mono": "^5.2.8",
+    "gsap": "^3.15.0",
+    "lenis": "^1.3.23",
+    "three": "^0.184.0"
+  }
+}

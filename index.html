@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="InstrumentHub Studio is a browser-native music workstation: play instruments, learn theory, record on a piano roll, practice with feedback, and get a personalised coach. No install, no account.">
+  <meta name="theme-color" content="#050608">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <meta property="og:title" content="InstrumentHub — a living musical artifact">
+  <meta property="og:description" content="A browser-native music machine. Play, and it wakes — theory, practice, a recording studio, and a quiet intelligence watching what you play.">
+  <meta property="og:type" content="website">
+  <title>InstrumentHub — a living musical artifact</title>
+</head>
+<body>
+  <a class="skip-link" href="#playground">Skip to playground</a>
+
+  <header class="site-header" aria-label="Primary">
+    <nav class="nav-shell">
+      <a class="brand" href="#home" aria-label="InstrumentHub home">
+        <span class="brand-mark" aria-hidden="true">IH</span>
+        <span>InstrumentHub</span>
+      </a>
+      <div class="nav-links" aria-label="Sections">
+        <a href="#instruments">Instruments</a>
+        <a href="#playground">Play</a>
+        <a href="#theory">Theory</a>
+        <a href="#studio">Studio</a>
+        <a href="#practice">Practice</a>
+        <a href="#coach">Coach</a>
+      </div>
+      <div class="nav-actions">
+        <button class="tool-button nav-cmdk" id="cmdkButton" type="button" aria-label="Open command palette" title="Command palette (Ctrl+K)">⌘K</button>
+        <button class="button button-primary nav-install" id="installButton" type="button" hidden>Install</button>
+        <button class="icon-button" id="themeToggle" type="button" aria-label="Toggle theme" title="Toggle theme">
+          <span aria-hidden="true">◐</span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="home">
+    <section class="hero-section" aria-labelledby="heroTitle">
+      <div class="hero-content">
+        <p class="eyebrow">A living musical artifact</p>
+        <h1 id="heroTitle">Play, and it wakes.</h1>
+        <p class="hero-copy">A machine for sound, theory, and practice — discovered, not delivered. Make a noise and the room comes alive around you. Nothing to install. No one else is here.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#playground">Begin</a>
+          <a class="button button-ghost" href="#instruments">Choose an instrument</a>
+        </div>
+      </div>
+      <p class="hero-scrollcue" aria-hidden="true">Scroll to descend</p>
+    </section>
+
+    <section class="section" id="instruments" aria-labelledby="instrumentsTitle">
+      <div class="section-heading">
+        <p class="eyebrow">The instruments</p>
+        <h2 id="instrumentsTitle">Each one is waiting.</h2>
+        <p class="section-sub">Ten voices, dormant until you choose one. Pick by feel, family, or range — then make it speak.</p>
+      </div>
+      <div id="instrumentCards" class="instrument-grid" aria-label="Instrument cards"></div>
+    </section>
+
+    <section class="playground-shell" id="playground" aria-labelledby="playgroundTitle">
+      <div class="app-topbar">
+        <div>
+          <p class="eyebrow">Now playing</p>
+          <h2 id="playgroundTitle"><span id="activeInstrumentName">Piano</span></h2>
+        </div>
+        <div class="transport" aria-label="Recording controls">
+          <button class="tool-button" id="recordBtn" type="button">Record</button>
+          <button class="tool-button" id="stopBtn" type="button">Stop</button>
+          <button class="tool-button" id="replayBtn" type="button">Replay</button>
+          <button class="tool-button" id="downloadBtn" type="button">Download</button>
+        </div>
+      </div>
+
+      <div class="app-layout">
+        <aside class="app-sidebar" aria-label="Instrument details and practice tools">
+          <div class="sidebar-block">
+            <p class="eyebrow">Instrument</p>
+            <h3 id="infoName">Piano</h3>
+            <p id="infoDescription"></p>
+            <dl class="info-list">
+              <div><dt>Family</dt><dd id="infoFamily"></dd></div>
+              <div><dt>Range</dt><dd id="infoRange"></dd></div>
+              <div><dt>Notes</dt><dd id="infoNotes"></dd></div>
+            </dl>
+          </div>
+          <div class="sidebar-block">
+            <h3>Keyboard map</h3>
+            <div id="shortcutList" class="shortcut-list"></div>
+          </div>
+          <div class="sidebar-block midi-block">
+            <h3>MIDI</h3>
+            <p id="midiStatus" class="midi-status">Checking for devices…</p>
+            <dl class="info-list">
+              <div><dt>Device</dt><dd id="midiDevice">—</dd></div>
+              <div><dt>Channel</dt><dd id="midiChannel">—</dd></div>
+              <div><dt>Last message</dt><dd id="midiMessage">—</dd></div>
+              <div><dt>Velocity</dt><dd id="midiVelocity">—</dd></div>
+            </dl>
+          </div>
+          <div class="sidebar-block">
+            <h3>Learning notes</h3>
+            <p id="infoHistory"></p>
+            <p id="infoUses"></p>
+          </div>
+          <div class="sidebar-block practice-card">
+            <h3>Practice mode</h3>
+            <p id="practicePrompt">Press Start to get a target note.</p>
+            <div class="practice-score"><span id="practiceScore">0</span> points</div>
+            <button class="button button-primary" id="practiceBtn" type="button">Start practice</button>
+          </div>
+        </aside>
+
+        <section class="instrument-stage" aria-label="Playable instrument">
+          <div id="statusBanner" class="status-banner" role="status">Click any note or press a mapped key to enable audio.</div>
+          <div class="stage-header">
+            <div>
+              <p class="eyebrow">Mode</p>
+              <div class="segmented" role="group" aria-label="Play mode">
+                <button class="segment active" data-mode="note" type="button">Note</button>
+                <button class="segment" data-mode="chord" type="button">Chord</button>
+                <button class="segment" data-mode="scale" type="button">Scale</button>
+              </div>
+            </div>
+            <div class="select-row">
+              <label for="chordSelect">Chord</label>
+              <select id="chordSelect">
+                <option value="major">Major</option>
+                <option value="minor">Minor</option>
+                <option value="dominant7">Dominant 7</option>
+                <option value="major7">Major 7</option>
+                <option value="minor7">Minor 7</option>
+                <option value="sus4">Suspended</option>
+              </select>
+            </div>
+            <div class="select-row">
+              <label for="scaleSelect">Scale</label>
+              <select id="scaleSelect">
+                <option value="major">Major</option>
+                <option value="minor">Minor</option>
+                <option value="pentatonic">Pentatonic</option>
+                <option value="blues">Blues</option>
+              </select>
+            </div>
+          </div>
+          <div id="instrumentSurface" class="instrument-surface" tabindex="0"></div>
+          <div class="note-readout" aria-live="polite">
+            <span id="noteReadout">Hover or play a note to inspect it.</span>
+          </div>
+          <canvas id="visualizerCanvas" class="visualizer" aria-label="Audio visualizer"></canvas>
+        </section>
+      </div>
+
+      <div class="bottom-dock" aria-label="Playback controls">
+        <div id="hwDock" class="opus-dock" aria-label="Instrument controls"></div>
+        <div class="dock-utils">
+          <button class="tool-button" id="fullscreenBtn" type="button">Fullscreen</button>
+          <button class="tool-button" id="helpBtn" type="button">Shortcuts</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section theory-section" id="theory" data-zone="theory" aria-labelledby="theoryTitle">
+      <div class="section-heading">
+        <p class="eyebrow">Theory</p>
+        <h2 id="theoryTitle">The celestial machine.</h2>
+        <p class="section-sub">Scales, chords, the circle of fifths — an ancient mechanism you turn by hand to see how sound is built.</p>
+      </div>
+      <div id="theoryWorkspace" class="theory-workspace"></div>
+    </section>
+
+    <section class="section studio-section" id="studio" data-zone="studio" aria-labelledby="studioTitle">
+      <div class="section-heading">
+        <p class="eyebrow">Studio</p>
+        <h2 id="studioTitle">The 2 A.M. chamber.</h2>
+        <p class="section-sub">Record, layer, and export while the world sleeps. Capture the idea before it forgets itself.</p>
+      </div>
+      <div id="studioWorkspace" class="studio-workspace"></div>
+    </section>
+
+    <section class="section practice-section" id="practice" data-zone="practice" aria-labelledby="practiceTitle">
+      <div class="section-heading">
+        <p class="eyebrow">Practice</p>
+        <h2 id="practiceTitle">The arena.</h2>
+        <p class="section-sub">Where progress stops being a number and becomes something you can see grow.</p>
+      </div>
+      <div id="practiceWorkspace" class="practice-workspace"></div>
+    </section>
+
+    <section class="section coach-section" id="coach" data-zone="coach" aria-labelledby="coachTitle">
+      <div class="section-heading">
+        <p class="eyebrow">Coach</p>
+        <h2 id="coachTitle">The intelligence.</h2>
+        <p class="section-sub">It watches what you play and tells you what it found — quietly, without being asked.</p>
+      </div>
+      <div id="coachWorkspace" class="coach-workspace"></div>
+    </section>
+  </main>
+
+  <div class="modal" id="shortcutModal" hidden>
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="shortcutTitle">
+      <button class="icon-button modal-close" id="closeHelpBtn" type="button" aria-label="Close shortcuts">×</button>
+      <h2 id="shortcutTitle">Keyboard Shortcuts</h2>
+      <p>Use the mapped keys in the sidebar to play notes. Space toggles the metronome, R starts recording, S stops, and P replays.</p>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div>
+      <strong>InstrumentHub</strong>
+      <p>A machine for sound. It runs entirely in your browser and remembers only what you make.</p>
+    </div>
+    <a href="#home">Return to the surface</a>
+  </footer>
+
+  <!-- Persistent living world (backdrop) + immersive intro overlay. Both are
+       progressive enhancement, isolated from the application logic. -->
+  <div id="experience" class="experience-root" hidden></div>
+  <script type="module" src="/src/world/boot.js"></script>
+  <script type="module" src="/src/experience/boot.js"></script>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
