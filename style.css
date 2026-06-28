@@ -1638,3 +1638,59 @@ select, input[type="number"] {
   }
   #ambientCanvas { display: none; }
 }
+
+/* =====================================================================
+   Depth & negative space — each workspace is a PLACE you arrive at.
+   The four zones get a centered, cinematic threshold with a soft zone-coloured
+   aura and generous air, then the panel floats above the living world (more
+   translucent, deeper lift → the world shows through). Instruments + playground
+   stay left-aligned so the rhythm alternates rather than reading as one uniform
+   centered column (the intended asymmetry).
+   ===================================================================== */
+
+/* Arrival rhythm: a long beat of negative space around every workspace. */
+.theory-section, .studio-section, .practice-section, .coach-section {
+  padding-top: clamp(5rem, 13vh, 10rem);
+  padding-bottom: clamp(5rem, 13vh, 10rem);
+}
+
+/* The threshold: centered, large, with a soft zone-coloured aura behind it. */
+[data-zone] .section-heading {
+  max-width: 760px;
+  margin: 0 auto clamp(2.75rem, 6vh, 4.75rem);
+  text-align: center;
+}
+[data-zone] .section-heading h2 {
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  line-height: 1;
+}
+[data-zone] .section-heading .section-sub { margin-left: auto; margin-right: auto; }
+[data-zone] .section-heading::before {
+  left: 50%; top: 50%; right: auto; transform: translate(-50%, -50%);
+  width: 130%; height: 240%;
+  background: radial-gradient(50% 50% at 50% 50%, var(--accent-soft), transparent 70%);
+  opacity: 0.85;
+}
+
+/* Panels float above the world: more translucent, softer corners, deeper lift. */
+.theory-workspace, .studio-workspace, .practice-workspace, .coach-workspace {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--elev-float);
+  -webkit-backdrop-filter: blur(26px);
+  backdrop-filter: blur(26px);
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+}
+
+/* Instruments + playground: left-aligned, just given room to breathe. */
+#instruments { padding-top: clamp(4rem, 10vh, 8rem); padding-bottom: clamp(4rem, 10vh, 8rem); }
+#instruments .section-heading { margin-bottom: clamp(2rem, 4vh, 3rem); }
+.instrument-grid { gap: clamp(1rem, 2vw, 1.6rem); }
+.instrument-card { padding: clamp(1.1rem, 2vw, 1.6rem); }
+.playground-shell { margin: clamp(2rem, 6vh, 5rem) auto clamp(4rem, 10vh, 8rem); padding: clamp(1rem, 2vw, 1.6rem); }
+
+/* Mobile: rein the cinematic spacing in so it isn't all whitespace. */
+@media (max-width: 720px) {
+  .theory-section, .studio-section, .practice-section, .coach-section { padding-top: 3.5rem; padding-bottom: 3.5rem; }
+  [data-zone] .section-heading h2 { font-size: clamp(2.2rem, 9vw, 3rem); }
+}
