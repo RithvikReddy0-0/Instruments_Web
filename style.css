@@ -1705,59 +1705,66 @@ select, input[type="number"] {
 }
 
 /* =====================================================================
-   Hero backdrop — calm field + a single guiding "thread of light".
-   The living world is gorgeous but too busy/bright directly behind the hero
-   copy (eye strain). A soft scrim mutes it to a restful near-black behind the
-   text; a faint thread with a travelling note of light then guides the eye
-   downward into the instrument. Strictly decorative + reduced-motion aware.
+   Hero backdrop — a calm, even field with one descending note of light.
+   The full living world behind the copy strained the eyes, so the hero now
+   rests on its own even dark field (the world reveals as you scroll into it),
+   with a single thin thread + a luminous note descending toward the scroll cue
+   to draw you in. Minimal, premium, reduced-motion aware.
    ===================================================================== */
 .hero-scrim {
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: radial-gradient(120% 95% at 50% 44%,
-    rgba(6, 7, 14, 0.92) 0%,
-    rgba(6, 7, 14, 0.64) 42%,
-    rgba(6, 7, 14, 0.18) 78%,
-    transparent 100%);
+  background:
+    radial-gradient(135% 78% at 50% -12%, rgba(139, 123, 255, 0.13), transparent 58%),
+    linear-gradient(180deg, #090a16 0%, #07080f 52%, rgba(7, 8, 16, 0.84) 100%);
 }
 html.light-theme .hero-scrim {
-  background: radial-gradient(120% 95% at 50% 44%,
-    rgba(214, 220, 230, 0.9) 0%,
-    rgba(214, 220, 230, 0.6) 42%,
-    rgba(214, 220, 230, 0.16) 78%,
-    transparent 100%);
+  background:
+    radial-gradient(135% 78% at 50% -12%, rgba(91, 79, 212, 0.12), transparent 58%),
+    linear-gradient(180deg, #e8ecf4 0%, #dee3ed 60%, rgba(214, 220, 230, 0.82) 100%);
 }
 
-.hero-thread {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  overflow: visible;
-}
-.hero-thread .thread-base {
-  fill: none;
-  stroke: url(#threadGrad);
-  stroke-width: 1.1;
-  stroke-linecap: round;
-  opacity: 0.2;
-}
-.hero-thread .thread-glow { fill: url(#noteGlow); }
-.hero-thread .thread-note { fill: #eaf4ff; filter: drop-shadow(0 0 7px rgba(110, 231, 255, 0.95)); }
-.hero-thread .thread-trail { opacity: 0.6; filter: drop-shadow(0 0 5px rgba(139, 123, 255, 0.8)); }
-
-/* Keep hero copy above the backdrop layers. */
+/* Hero copy sits above the field. */
 .hero-content { position: relative; z-index: 2; }
 .hero-scrollcue { z-index: 2; }
 
-/* Reduced motion: drop the travelling note, keep a still, faint thread. */
+/* The guiding thread: a thin vertical line above the scroll cue with a luminous
+   note descending it, drawing the eye down into the instrument. */
+.hero-descend {
+  position: absolute;
+  left: 50%;
+  bottom: calc(4vh + 2.4rem);
+  z-index: 2;
+  transform: translateX(-50%);
+  width: 1px;
+  height: clamp(72px, 15vh, 150px);
+  pointer-events: none;
+  overflow: visible;
+  background: linear-gradient(180deg, transparent, rgba(110, 231, 255, 0.4) 26%, rgba(139, 123, 255, 0.45) 74%, transparent);
+}
+.hero-descend::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--cool-white, #eaf4ff);
+  box-shadow: 0 0 12px 2px rgba(110, 231, 255, 0.9), 0 0 26px 7px rgba(139, 123, 255, 0.45);
+  animation: hero-note-descend 4s cubic-bezier(0.4, 0, 0.5, 1) infinite;
+}
+@keyframes hero-note-descend {
+  0%   { top: 0%;   opacity: 0; }
+  12%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+/* Reduced motion: a still note resting on the thread, no descent. */
 @media (prefers-reduced-motion: reduce) {
-  .hero-thread .thread-glow,
-  .hero-thread .thread-note,
-  .hero-thread .thread-trail { display: none; }
-  .hero-thread .thread-base { opacity: 0.28; }
+  .hero-descend::after { animation: none; top: 50%; }
 }
