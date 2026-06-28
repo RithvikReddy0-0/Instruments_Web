@@ -57,13 +57,13 @@ export function startWorld({ mobile } = {}) {
       auroraPool(x, 840, 230, "150,200,235", 0.42, 680); // cool blue
       auroraPool(x, 512, 885, "150,225,205", 0.5, 840);  // mint horizon
     } else {
-      g.addColorStop(0, "#04060c"); g.addColorStop(0.5, "#070b15"); g.addColorStop(0.82, "#0a1322"); g.addColorStop(1, "#0c1a30");
+      g.addColorStop(0, "#06060f"); g.addColorStop(0.5, "#080a18"); g.addColorStop(0.82, "#0b1024"); g.addColorStop(1, "#0e1430");
       x.fillStyle = g; x.fillRect(0, 0, 1024, 1024);
       x.globalCompositeOperation = "lighter"; // pools glow additively on black
-      auroraPool(x, 190, 285, "20,95,125", 0.9, 760);   // cyan
-      auroraPool(x, 850, 225, "16,72,102", 0.8, 690);
-      auroraPool(x, 512, 905, "18,84,110", 0.95, 880);  // horizon cyan
-      auroraPool(x, 720, 640, "62,42,124", 0.42, 600);  // rare violet
+      auroraPool(x, 175, 280, "28,92,138", 0.85, 760);  // cyan
+      auroraPool(x, 860, 235, "78,58,158", 0.6, 720);   // violet (elevated)
+      auroraPool(x, 512, 905, "26,86,124", 0.9, 880);   // horizon cyan
+      auroraPool(x, 690, 600, "104,76,196", 0.5, 640);  // violet glow
     }
     const t = new THREE.CanvasTexture(c);
     t.colorSpace = THREE.SRGBColorSpace;
@@ -79,7 +79,7 @@ export function startWorld({ mobile } = {}) {
     auroraTex?.dispose();
     auroraTex = makeAurora(light);
     scene.background = auroraTex;
-    scene.fog.color.set(light ? 0xe3ecf5 : 0x070b15);
+    scene.fog.color.set(light ? 0xe3ecf5 : 0x080a18);
   }
   applyTheme();
   const themeMo = new MutationObserver(applyTheme);

@@ -48,9 +48,9 @@ export class Visualizer {
       const barHeight = Math.max(4, (value / 255) * height);
       const x = index * (barWidth + gap);
       const y = height - barHeight;
-      // Cyan→mint life spectrum — cool energy that brightens with signal.
-      const hue = 190 - index * 0.5;
-      this.ctx.fillStyle = `hsl(${hue} 90% ${46 + value / 9}%)`;
+      // Cyan→violet cosmic spectrum — cool life energy drifting to mystery.
+      const hue = 188 + index * 1.4;
+      this.ctx.fillStyle = `hsl(${hue} 88% ${48 + value / 9}%)`;
       this.ctx.fillRect(x, y, barWidth, barHeight);
     }
 

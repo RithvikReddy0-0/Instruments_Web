@@ -25,8 +25,10 @@ const FLOOR_Y = -4.2;
 // Theme palettes. Near = closest grid colour, Far = receding colour (zone-tinted),
 // Horizon = the emissive band where the grid converges.
 const PAL = {
-  dark:  { near: 0x6ee7ff, far: 0x72f1b8, horizon: 0x8aa6ff, opacity: 0.95,
+  // DARK: grid recedes cyan (life) → violet (mystery), violet-blue horizon.
+  dark:  { near: 0x6ee7ff, far: 0x8b7bff, horizon: 0x9aa0ff, opacity: 0.95,
            mint: 0x72f1b8, white: 0xf2f6ff },
+  // LIGHT: saturated deep teal → emerald horizon, reads on the dusk bg.
   light: { near: 0x0e7490, far: 0x0d9488, horizon: 0x0f766e, opacity: 0.85,
            mint: 0x0a9d6a, white: 0x51647d }
 };

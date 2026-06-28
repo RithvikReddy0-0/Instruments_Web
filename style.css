@@ -7,11 +7,11 @@
 :root {
   color-scheme: dark;
 
-  /* --- materials (Deep-space finish — cool near-black, world base) --- */
-  --bezel: #050608;       /* page / outer chassis (deepest void) */
-  --chassis: #10141c;     /* raised hardware panels (cool graphite) */
-  --chassis-hi: #1b2230;  /* top-lit panel edge */
-  --screen: #050608;      /* recessed displays (deepest void) */
+  /* --- materials (Nocturne Aurora — deep indigo-violet cosmos, world base) --- */
+  --bezel: #06070e;       /* page / outer chassis (indigo void) */
+  --chassis: #11131f;     /* raised hardware panels (indigo graphite) */
+  --chassis-hi: #1c2033;  /* top-lit panel edge */
+  --screen: #06070e;      /* recessed displays (indigo void) */
   --glass-highlight: rgba(234, 244, 255, 0.05);
 
   /* --- ink (ghost white = information, cool, never warm) --- */
@@ -34,11 +34,15 @@
   --signal-mint: #72f1b8;  /* signal mint */
   --cool-white: #f8fafc;   /* cool white light */
   --coach: #cfe0f0;        /* coach zone accent (themeable) */
-  --energy-2: #aef0ff;     /* theory bright highlight (themeable) */
+  --energy-2: #aef0ff;     /* cyan bright highlight (themeable) */
   --mint-2: #b7f7da;       /* practice bright highlight (themeable) */
-  --surface-0: #050608;
-  --surface-1: #0b0d12;
-  --surface-2: #10141c;
+  /* Violet — the mystery / celestial accent (Nocturne Aurora). */
+  --violet: #8b7bff;
+  --violet-2: #b3a8ff;
+  --violet-soft: rgba(139, 123, 255, 0.16);
+  --surface-0: #06070e;
+  --surface-1: #0b0c16;
+  --surface-2: #11131f;
   --energy-soft: rgba(110, 231, 255, 0.14);
 
   /* --- Phase 1: premium type scale, weight ceiling, layered depth --- */
@@ -48,9 +52,9 @@
   --w-normal: 400; --w-medium: 500; --w-semi: 600;     /* UI ceiling = 600 */
   --ink-on-accent: #060606;                            /* dark text on any accent fill */
   /* Layered surfaces — recessed → panel → floating, translucent so the world glows through */
-  --surface-sunk: rgba(5, 6, 8, 0.74);
-  --surface: rgba(16, 20, 28, 0.52);
-  --surface-raised: rgba(24, 30, 42, 0.7);
+  --surface-sunk: rgba(6, 7, 14, 0.74);
+  --surface: rgba(17, 19, 31, 0.52);
+  --surface-raised: rgba(26, 29, 46, 0.7);
   --blur: 16px;
   --elev-card: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 20px 44px -26px rgba(0, 0, 0, 0.92);
   --elev-float: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 34px 76px -28px rgba(0, 0, 0, 0.94);
@@ -58,8 +62,8 @@
   /* --- legacy aliases (keep existing CSS working) --- */
   --bg: var(--bezel);
   --bg-soft: var(--chassis);
-  --panel: rgba(14, 18, 27, 0.55);
-  --panel-strong: rgba(19, 25, 37, 0.74);
+  --panel: rgba(15, 16, 28, 0.55);
+  --panel-strong: rgba(20, 22, 38, 0.74);
   --text: var(--ink);
   --muted: var(--ink-dim);
   --text-subtle: var(--ink-faint);
@@ -136,9 +140,13 @@
   --signal-mint: #0a9d6a;  /* signal mint → emerald-600 */
   --cool-white: #475569;   /* "information" reads as slate on light */
   --coach: #51647d;        /* coach zone accent on light */
-  --energy-2: #0891b2;     /* theory highlight on light (cyan-600) */
+  --energy-2: #0891b2;     /* cyan highlight on light (cyan-600) */
   --mint-2: #0a9d6a;       /* practice highlight on light (emerald) */
   --energy-soft: rgba(14, 116, 144, 0.12);
+  /* violet, light-adapted (darker + saturated so it reads on the dusk bg) */
+  --violet: #5b4fd4;
+  --violet-2: #6d5efc;
+  --violet-soft: rgba(91, 79, 212, 0.12);
 
   --panel: rgba(255, 255, 255, 0.7);
   --panel-strong: rgba(255, 255, 255, 0.92);
@@ -185,9 +193,10 @@ body::before {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(70% 60% at 16% 0%, rgba(110, 231, 255, 0.08), transparent 62%),
-    radial-gradient(60% 55% at 88% 4%, rgba(114, 241, 184, 0.05), transparent 60%),
-    radial-gradient(120% 100% at 50% 120%, rgba(0, 0, 0, 0.55), transparent 60%),
+    radial-gradient(70% 60% at 14% 0%, rgba(110, 231, 255, 0.07), transparent 62%),
+    radial-gradient(55% 50% at 86% 2%, rgba(139, 123, 255, 0.08), transparent 60%),
+    radial-gradient(48% 44% at 62% 24%, rgba(114, 241, 184, 0.04), transparent 60%),
+    radial-gradient(120% 100% at 50% 120%, rgba(0, 0, 0, 0.5), transparent 60%),
     linear-gradient(180deg, rgba(234, 244, 255, 0.02), transparent 26%);
   z-index: -3;
 }
@@ -448,7 +457,7 @@ h3 { letter-spacing: -0.01em; }
 /* --- Workspace identities: one chassis, four rooms. A single data-zone retargets
    the accent so each workspace becomes its own world (color hierarchy:
    cyan = life · mint = progress · cool white = information · brass = hardware). --- */
-[data-zone="theory"]   { --accent: var(--energy);      --accent-2: var(--energy-2);  --accent-soft: var(--energy-soft); }
+[data-zone="theory"]   { --accent: var(--violet);      --accent-2: var(--violet-2);  --accent-soft: var(--violet-soft); }
 [data-zone="practice"] { --accent: var(--signal-mint); --accent-2: var(--mint-2);    --accent-soft: rgba(114, 241, 184, 0.13); }
 [data-zone="coach"]    { --accent: var(--coach);       --accent-2: var(--cool-white); --accent-soft: rgba(81, 100, 125, 0.14); }
 [data-zone="studio"]   { --accent: var(--brass);       --accent-2: var(--brass-2);    --accent-soft: var(--brass-soft); }
