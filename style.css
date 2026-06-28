@@ -208,7 +208,7 @@ body::after {
   inset: 0;
   pointer-events: none;
   z-index: -1;
-  opacity: 0.035;
+  opacity: 0.022;
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 160px 160px;
@@ -1702,4 +1702,62 @@ select, input[type="number"] {
 @media (max-width: 720px) {
   .theory-section, .studio-section, .practice-section, .coach-section { padding-top: 3.5rem; padding-bottom: 3.5rem; }
   [data-zone] .section-heading h2 { font-size: clamp(2.2rem, 9vw, 3rem); }
+}
+
+/* =====================================================================
+   Hero backdrop — calm field + a single guiding "thread of light".
+   The living world is gorgeous but too busy/bright directly behind the hero
+   copy (eye strain). A soft scrim mutes it to a restful near-black behind the
+   text; a faint thread with a travelling note of light then guides the eye
+   downward into the instrument. Strictly decorative + reduced-motion aware.
+   ===================================================================== */
+.hero-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(120% 95% at 50% 44%,
+    rgba(6, 7, 14, 0.92) 0%,
+    rgba(6, 7, 14, 0.64) 42%,
+    rgba(6, 7, 14, 0.18) 78%,
+    transparent 100%);
+}
+html.light-theme .hero-scrim {
+  background: radial-gradient(120% 95% at 50% 44%,
+    rgba(214, 220, 230, 0.9) 0%,
+    rgba(214, 220, 230, 0.6) 42%,
+    rgba(214, 220, 230, 0.16) 78%,
+    transparent 100%);
+}
+
+.hero-thread {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+.hero-thread .thread-base {
+  fill: none;
+  stroke: url(#threadGrad);
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  opacity: 0.2;
+}
+.hero-thread .thread-glow { fill: url(#noteGlow); }
+.hero-thread .thread-note { fill: #eaf4ff; filter: drop-shadow(0 0 7px rgba(110, 231, 255, 0.95)); }
+.hero-thread .thread-trail { opacity: 0.6; filter: drop-shadow(0 0 5px rgba(139, 123, 255, 0.8)); }
+
+/* Keep hero copy above the backdrop layers. */
+.hero-content { position: relative; z-index: 2; }
+.hero-scrollcue { z-index: 2; }
+
+/* Reduced motion: drop the travelling note, keep a still, faint thread. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-thread .thread-glow,
+  .hero-thread .thread-note,
+  .hero-thread .thread-trail { display: none; }
+  .hero-thread .thread-base { opacity: 0.28; }
 }

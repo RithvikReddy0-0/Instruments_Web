@@ -42,6 +42,36 @@
 
   <main id="home">
     <section class="hero-section" aria-labelledby="heroTitle">
+      <!-- Calm field: mute the busy living world behind the text so it reads easily. -->
+      <div class="hero-scrim" aria-hidden="true"></div>
+      <!-- The guiding thread: a faint line with a "note" of light tracing it,
+           drawing the eye downward into the instrument. Decorative. -->
+      <svg class="hero-thread" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="threadGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#6ee7ff"/>
+            <stop offset="55%" stop-color="#8b7bff"/>
+            <stop offset="100%" stop-color="#72f1b8"/>
+          </linearGradient>
+          <radialGradient id="noteGlow">
+            <stop offset="0%" stop-color="#eaf4ff"/>
+            <stop offset="35%" stop-color="#8b7bff"/>
+            <stop offset="100%" stop-color="#8b7bff" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <path id="heroThreadPath" class="thread-base" d="M -40 150 C 230 70 360 330 540 300 C 720 270 900 470 500 575"/>
+        <circle class="thread-glow" r="13">
+          <animateMotion dur="16s" repeatCount="indefinite" calcMode="linear"><mpath href="#heroThreadPath"/></animateMotion>
+          <animate attributeName="opacity" dur="16s" repeatCount="indefinite" values="0;1;1;1;0" keyTimes="0;0.08;0.5;0.92;1"/>
+        </circle>
+        <circle class="thread-trail" r="2.4" fill="#8b7bff">
+          <animateMotion dur="16s" begin="-0.6s" repeatCount="indefinite" calcMode="linear"><mpath href="#heroThreadPath"/></animateMotion>
+        </circle>
+        <circle class="thread-note" r="3.6">
+          <animateMotion dur="16s" repeatCount="indefinite" calcMode="linear"><mpath href="#heroThreadPath"/></animateMotion>
+          <animate attributeName="opacity" dur="16s" repeatCount="indefinite" values="0;1;1;1;0" keyTimes="0;0.08;0.5;0.92;1"/>
+        </circle>
+      </svg>
       <div class="hero-content">
         <p class="eyebrow">A living musical artifact</p>
         <h1 id="heroTitle">Play, and it wakes.</h1>
