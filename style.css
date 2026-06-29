@@ -1705,28 +1705,53 @@ select, input[type="number"] {
 }
 
 /* =====================================================================
-   Hero backdrop — a calm, even field with one descending note of light.
-   The full living world behind the copy strained the eyes, so the hero now
-   rests on its own even dark field (the world reveals as you scroll into it),
-   with a single thin thread + a luminous note descending toward the scroll cue
-   to draw you in. Minimal, premium, reduced-motion aware.
+   Hero backdrop — a living-but-calm aurora field + a descending note of light.
+   A slow, low-contrast aurora drifts behind the copy; a soft centre scrim keeps
+   the text zone dark + even (validated ~15:1 contrast, no harsh hotspots) so it
+   never strains the eye. The full living world reveals as you scroll past the
+   hero. Reduced-motion aware.
    ===================================================================== */
-.hero-scrim {
+.hero-aurora {
   position: absolute;
-  inset: 0;
+  inset: -15%;
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(135% 78% at 50% -12%, rgba(139, 123, 255, 0.13), transparent 58%),
-    linear-gradient(180deg, #090a16 0%, #07080f 52%, rgba(7, 8, 16, 0.84) 100%);
+    radial-gradient(40% 38% at 16% 12%, rgba(96, 112, 235, 0.28), transparent 60%),
+    radial-gradient(38% 36% at 88% 8%, rgba(54, 170, 212, 0.22), transparent 60%),
+    radial-gradient(50% 46% at 28% 100%, rgba(54, 178, 140, 0.18), transparent 60%),
+    radial-gradient(62% 50% at 56% 106%, rgba(64, 188, 226, 0.22), transparent 60%),
+    linear-gradient(180deg, #0b0d20 0%, #080a16 52%, #0a0c20 100%);
+  animation: hero-aurora-drift 34s ease-in-out infinite;
+  will-change: transform;
+}
+@keyframes hero-aurora-drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(-2.4%, 1.8%, 0) scale(1.06); }
+}
+/* Centre scrim protects the copy's contrast; transparent at the edges so the
+   aurora glows around the text. */
+.hero-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(58% 50% at 50% 46%, rgba(6, 7, 14, 0.64), rgba(6, 7, 14, 0.16) 54%, transparent 80%),
+    radial-gradient(120% 95% at 50% 122%, rgba(4, 5, 10, 0.45), transparent 60%);
+}
+html.light-theme .hero-aurora {
+  background:
+    radial-gradient(40% 38% at 16% 12%, rgba(120, 110, 230, 0.22), transparent 60%),
+    radial-gradient(38% 36% at 88% 8%, rgba(60, 150, 200, 0.18), transparent 60%),
+    radial-gradient(60% 50% at 56% 106%, rgba(60, 170, 150, 0.18), transparent 60%),
+    linear-gradient(180deg, #e8ecf4 0%, #dee3ed 55%, #e4e9f1 100%);
 }
 html.light-theme .hero-scrim {
-  background:
-    radial-gradient(135% 78% at 50% -12%, rgba(91, 79, 212, 0.12), transparent 58%),
-    linear-gradient(180deg, #e8ecf4 0%, #dee3ed 60%, rgba(214, 220, 230, 0.82) 100%);
+  background: radial-gradient(58% 50% at 50% 46%, rgba(214, 220, 230, 0.5), transparent 80%);
 }
 
-/* Hero copy sits above the field. */
+/* Hero copy + cue above the field. */
 .hero-content { position: relative; z-index: 2; }
 .hero-scrollcue { z-index: 2; }
 
@@ -1764,7 +1789,8 @@ html.light-theme .hero-scrim {
   100% { top: 100%; opacity: 0; }
 }
 
-/* Reduced motion: a still note resting on the thread, no descent. */
+/* Reduced motion: still aurora, a note resting on the thread, no descent. */
 @media (prefers-reduced-motion: reduce) {
+  .hero-aurora { animation: none; }
   .hero-descend::after { animation: none; top: 50%; }
 }
