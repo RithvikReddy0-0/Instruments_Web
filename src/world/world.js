@@ -123,24 +123,9 @@ export function startWorld({ mobile } = {}) {
   function onMove(ev) { mouse.tx = (ev.clientX / window.innerWidth - 0.5); mouse.ty = (ev.clientY / window.innerHeight - 0.5); }
   window.addEventListener("pointermove", onMove, { passive: true });
 
-  // The world is the single ambient backdrop: retire the legacy 2D ambient AND
-  // the hero's decorative brass-dot canvas so the living world shows through from
-  // the first frame. They're created later by the app, so watch for them.
-  const LEGACY_IDS = ["ambientCanvas", "heroCanvas"];
-  function hideLegacy() {
-    let allDone = true;
-    LEGACY_IDS.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) { el.dataset.ihHidden = "1"; el.style.display = "none"; }
-      else allDone = false;
-    });
-    return allDone;
-  }
-  let legacyMo = null;
-  if (!hideLegacy()) {
-    legacyMo = new MutationObserver(() => { if (hideLegacy()) { legacyMo.disconnect(); legacyMo = null; } });
-    legacyMo.observe(document.body, { childList: true });
-  }
+  // (The legacy 2D ambient/hero canvases no longer exist: the hero canvas was
+  // removed with the marketing hero, and the 2D ambient now only starts when the
+  // world can't run — see main.js. So there's nothing left to hide.)
 
   // --- Scroll-coupled zone blend ---
   // Turn scroll position into continuous zone weights so the universe morphs as
@@ -257,8 +242,6 @@ export function startWorld({ mobile } = {}) {
       auroraTex?.dispose();
       renderer.dispose();
       canvas.remove();
-      legacyMo?.disconnect();
-      LEGACY_IDS.forEach((id) => { const el = document.getElementById(id); if (el && el.dataset.ihHidden) el.style.display = ""; });
     }
   };
 

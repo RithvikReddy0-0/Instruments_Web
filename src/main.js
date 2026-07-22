@@ -178,7 +178,10 @@ function initProductization() {
   initPWA({ bus, installButton: $("#installButton") });
   initOnboarding({ storage });
   setupNavHighlight();
-  initAmbient(audio);
+  // The living WebGL world is the backdrop. Only start the 2D ambient fallback
+  // when the world can't run (no WebGL / reduced motion, flagged by world/boot.js)
+  // — otherwise it burns a render loop behind an opaque canvas, unseen.
+  if (document.documentElement.classList.contains("ih-world-static")) initAmbient(audio);
   initMotion();
 }
 

@@ -7,11 +7,11 @@
  * the tab is hidden. Disabled entirely under prefers-reduced-motion.
  */
 
-// OPUS Midnight: warm brass field with a single cool spectral accent for depth.
+// Nocturne Aurora fallback field: cyan life + violet mystery + a mint signal.
 const COLORS = [
-  [200, 162, 75],   // brass
-  [226, 181, 103],  // warm gold
-  [79, 184, 255]    // soft cyan (sparse, for depth)
+  { rgb: [110, 231, 255], accent: true },   // cyan — life, rides the treble
+  { rgb: [139, 123, 255], accent: false },  // violet — mystery, rides the bass
+  { rgb: [114, 241, 184], accent: true }    // mint — signal (sparse)
 ];
 
 export function initAmbient(audio) {
@@ -60,9 +60,6 @@ export function initAmbient(audio) {
   let running = true;
   let frame = 0;
 
-  // Hero IH-1 panel meters react too (decorative, aria-hidden).
-  const heroBars = [...document.querySelectorAll(".mini-wave i")];
-
   function avg(from, to) {
     let sum = 0;
     for (let i = from; i < to; i += 1) sum += data[i];
@@ -78,28 +75,10 @@ export function initAmbient(audio) {
     energy += (overall - energy) * 0.08;
   }
 
-  // Drive the panel meters from live spectrum; when silent, hand them back to
-  // the idle CSS keyframe animation (matching its 18–72px height range).
-  function paintHero() {
-    if (!heroBars.length) return;
-    const live = energy > 0.02;
-    for (let i = 0; i < heroBars.length; i += 1) {
-      const bar = heroBars[i];
-      if (!live) {
-        if (bar.style.height) { bar.style.height = ""; bar.style.animationPlayState = ""; }
-        continue;
-      }
-      bar.style.animationPlayState = "paused";
-      const bin = data[2 + i * 4] / 255;
-      bar.style.height = `${(18 + bin * 54).toFixed(1)}px`;
-    }
-  }
-
   function tick() {
     if (!running) return;
     frame += 1;
     readBands();
-    if (frame % 2 === 0) paintHero(); // ~30fps for DOM writes
     ctx.clearRect(0, 0, w, h);
     ctx.globalCompositeOperation = "lighter";
 
@@ -108,13 +87,13 @@ export function initAmbient(audio) {
       if (p.x < -0.2 || p.x > 1.2) p.vx *= -1;
       if (p.y < -0.2 || p.y > 1.2) p.vy *= -1;
       const pulse = 0.5 + 0.5 * Math.sin(frame * 0.01 + p.phase);
-      // Cyan accent particles ride the treble; warm brass rides the bass.
-      const isAccent = p.c[2] > 200;
+      // Cyan/mint accents ride the treble; violet rides the bass.
+      const isAccent = p.c.accent;
       const band = isAccent ? treble : bass;
       const scale = (p.r * (0.85 + pulse * 0.15 + band * 0.7 + energy * 0.2)) / SS;
       const size = SS * scale;
       const alpha = (0.05 + pulse * 0.04 + band * 0.18 + treble * 0.06);
-      const [r, g, b] = p.c;
+      const [r, g, b] = p.c.rgb;
       ctx.globalAlpha = alpha;
       // tint: draw colored rect masked by sprite via per-particle offscreen would
       // be costly; instead approximate tint using shadow-free additive sprite +

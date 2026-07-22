@@ -12,8 +12,8 @@ html.exp-active body { overflow: hidden; height: 100%; }
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: #0b0b0d;
-  color: #f3efe6;
+  background: #06070e;
+  color: #eaf4ff;
   font-family: var(--font-sans, system-ui, sans-serif);
   overscroll-behavior: none;
 }
@@ -68,13 +68,13 @@ html.exp-active body { overflow: hidden; height: 100%; }
   font-size: clamp(2.2rem, 6vw, 4.2rem);
   letter-spacing: -0.01em;
   line-height: 1;
-  color: #f3efe6;
+  color: #eaf4ff;
 }
 .exp-caption p {
   margin: 0;
   font-size: clamp(0.95rem, 1.6vw, 1.15rem);
   letter-spacing: 0.04em;
-  color: #c8a24b;
+  color: #8b7bff;
 }
 
 /* Scroll hint. */
@@ -86,7 +86,7 @@ html.exp-active body { overflow: hidden; height: 100%; }
   font-size: 0.72rem;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: #6f6a60;
+  color: #5a6478;
   transition: opacity 0.5s ease;
 }
 .exp-scrollhint span { animation: exp-bob 1.8s ease-in-out infinite; display: inline-block; }
@@ -111,16 +111,16 @@ html.exp-active body { overflow: hidden; height: 100%; }
   font-size: clamp(0.85rem, 1.6vw, 1.05rem);
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #0b0b0d;
-  background: linear-gradient(180deg, #e2b567, #c8a24b);
+  color: #06070e;
+  background: linear-gradient(180deg, #aef0ff, #6ee7ff);
   border: none;
   border-radius: 999px;
   padding: 1.1rem 2.4rem;
-  box-shadow: 0 0 0 1px rgba(226, 181, 103, 0.5), 0 18px 50px -12px rgba(200, 162, 75, 0.6);
+  box-shadow: 0 0 0 1px rgba(110, 231, 255, 0.5), 0 18px 50px -12px rgba(110, 231, 255, 0.55);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.exp-enter:hover { transform: translateY(-2px); box-shadow: 0 0 0 1px rgba(226, 181, 103, 0.8), 0 26px 60px -14px rgba(200, 162, 75, 0.75); }
-.exp-enter:focus-visible { outline: 2px solid #4fb8ff; outline-offset: 3px; }
+.exp-enter:hover { transform: translateY(-2px); box-shadow: 0 0 0 1px rgba(110, 231, 255, 0.8), 0 26px 60px -14px rgba(139, 123, 255, 0.7); }
+.exp-enter:focus-visible { outline: 2px solid #6ee7ff; outline-offset: 3px; }
 
 /* Skip — always available. */
 .exp-skip {
@@ -133,15 +133,15 @@ html.exp-active body { overflow: hidden; height: 100%; }
   font-size: 0.72rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #9a9488;
+  color: #93a4ba;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 999px;
   padding: 0.5rem 1rem;
   transition: color 0.2s ease, border-color 0.2s ease;
 }
-.exp-skip:hover { color: #f3efe6; border-color: rgba(200, 162, 75, 0.6); }
-.exp-skip:focus-visible { outline: 2px solid #4fb8ff; outline-offset: 2px; }
+.exp-skip:hover { color: #eaf4ff; border-color: rgba(110, 231, 255, 0.6); }
+.exp-skip:focus-visible { outline: 2px solid #6ee7ff; outline-offset: 2px; }
 
 /* Whiteout handoff. */
 .exp-flash {
