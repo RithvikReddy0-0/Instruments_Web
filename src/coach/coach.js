@@ -36,23 +36,28 @@ function ringSVG(value, size = 88, stroke = 9) {
     </svg><span class="ring-label">${Math.round(v * 100)}%</span></div>`;
 }
 
-// Level + XP derived purely from existing analytics (no new state/feature).
-function heroSection(analytics) {
-  const xp = (analytics.totalCorrect || 0) * 10;
-  const level = Math.floor(Math.sqrt(xp / 40)) + 1;
-  const base = (level - 1) ** 2 * 40;
-  const next = level ** 2 * 40;
-  const progress = next > base ? Math.round(((xp - base) / (next - base)) * 100) : 0;
-  const acc = analytics.totalAttempts ? analytics.totalCorrect / analytics.totalAttempts : 0;
-  return `<section class="coach-hero" aria-label="Level and progress">
-    <div class="coach-level"><span class="coach-level-num">${level}</span><span class="coach-level-cap">Level</span></div>
-    <div class="coach-xp">
-      <div class="coach-xp-top"><span>${xp} XP</span><span>${next} XP</span></div>
-      <span class="coach-xp-bar"><span class="coach-xp-fill" style="width:${progress}%"></span></span>
-      <div class="coach-xp-top"><span>Level ${level}</span><span>Level ${level + 1}</span></div>
+// Presence readout — the intelligence quietly states what it has observed, from
+// the same analytics. No XP/level/streak game mechanics: this is awareness, not
+// a score.
+function presenceSection(report) {
+  const a = report.analytics;
+  const acc = a.totalAttempts ? a.totalCorrect / a.totalAttempts : 0;
+  const sessions = a.totalSessions || 0;
+  const o = report.trends.overall;
+  const hasMomentum = o.samples >= 2;
+  const dir = hasMomentum ? o.direction : "flat";
+  const momentum = hasMomentum ? `${o.delta >= 0 ? "+" : ""}${pct(o.delta)}` : "—";
+  return `<section class="coach-presence" aria-label="What the coach has observed">
+    <div class="coach-presence-lead">
+      <p class="coach-presence-eyebrow">The intelligence</p>
+      <p class="coach-presence-line">It has been listening to how you play.</p>
+      <dl class="coach-readouts">
+        <div><dt>Sessions observed</dt><dd>${sessions}</dd></div>
+        <div><dt>Accuracy</dt><dd>${pct(acc)}</dd></div>
+        <div><dt>Momentum</dt><dd class="coach-trend coach-${dir}">${TREND_ICON[dir]} ${momentum}</dd></div>
+      </dl>
     </div>
     ${ringSVG(acc)}
-    <div class="coach-streak"><span class="coach-streak-flame" aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></span><span class="coach-streak-num">${analytics.bestStreak || 0}</span><span class="coach-streak-cap">Best streak</span></div>
   </section>`;
 }
 
@@ -114,11 +119,28 @@ export function initCoach({ bus, state, storage, mount }) {
       ${rings}${axes}<polygon points="${dataPts}" class="coach-radar-data" /></svg>`;
   }
 
+  const REDUCE = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Patterns emerge from darkness: each panel fades + rises as it enters view.
+  // Progressive enhancement — the hidden state only applies once .coach-emerge is
+  // set, so without JS (or under reduced motion) everything is simply present.
+  function emerge() {
+    if (REDUCE) return;
+    const root = mount.querySelector(".coach");
+    if (!root) return;
+    root.classList.add("coach-emerge");
+    const items = [...root.querySelectorAll(".coach-presence, .coach-panel")];
+    items.forEach((el, i) => { el.style.transitionDelay = `${Math.min(i * 70, 420)}ms`; });
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("is-revealed"); io.unobserve(e.target); } });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    items.forEach((el) => io.observe(el));
+  }
+
   function render(report) {
     if (!report.hasData) {
       mount.innerHTML = `<div class="coach"><div class="coach-empty">
-        <h3>Your coach is warming up</h3>
-        <p class="coach-hint">Complete a session in the Practice Platform and your personalised analysis, strengths, weaknesses, and daily plan will appear here.</p>
+        <h3>Nothing to read yet</h3>
+        <p class="coach-hint">Play a few sessions in the Practice Platform and the intelligence will begin to surface what it notices — your strengths, your blind spots, and where to go next.</p>
       </div></div>`;
       return;
     }
@@ -166,9 +188,9 @@ export function initCoach({ bus, state, storage, mount }) {
 
     mount.innerHTML = `
       <div class="coach">
-        ${heroSection(report.analytics)}
-        <section class="coach-panel coach-insights" aria-label="Your summary">
-          <h3 class="coach-subhead">Your summary</h3>
+        ${presenceSection(report)}
+        <section class="coach-panel coach-insights" aria-label="What it noticed">
+          <h3 class="coach-subhead">What it noticed</h3>
           <dl class="coach-insight-grid">${insightCards}</dl>
         </section>
 
@@ -180,7 +202,7 @@ export function initCoach({ bus, state, storage, mount }) {
           <section class="coach-panel" aria-label="Recent progress">
             <h3 class="coach-subhead">Recent progress</h3>
             <p class="coach-progress">${progressNote}</p>
-            <h4 class="coach-mini">Recommended next</h4>
+            <h4 class="coach-mini">What it suggests</h4>
             <div class="coach-recs">${recList}</div>
           </section>
         </div>
@@ -201,6 +223,8 @@ export function initCoach({ bus, state, storage, mount }) {
           <div class="coach-plan">${planList}</div>
         </section>
       </div>`;
+
+    emerge();
   }
 
   // ---- events ----
